@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>build-board</title>
+<meta name="description" content="Build order, rebuild sets, coverage gates and a build page for multi-module SDK builds.">
+<style>
+:root{--bg:#fff;--fg:#111827;--mut:#4b5563;--card:#f3f4f6;--line:#d1d5db;--link:#1d4ed8}
+@media (prefers-color-scheme:dark){:root{--bg:#0f172a;--fg:#e5e7eb;--mut:#9ca3af;--card:#1e293b;--line:#334155;--link:#93c5fd}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:46rem;margin:0 auto;padding:2rem 16px 4rem}h1{margin:.2rem 0}h2{margin-top:2rem}a{color:var(--link)}.sub{color:var(--mut);margin-top:0}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px;line-height:1.45;position:relative}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:1rem 0 .5rem}
+button{font:inherit;padding:.4rem .8rem;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:6px;cursor:pointer}
+button[aria-pressed="true"]{border-color:var(--link);color:var(--link)}
+.cta{display:inline-block;padding:.5rem 1rem;border:1px solid var(--link);border-radius:6px;text-decoration:none;margin-right:8px}
+</style></head><body><main>
+<h1>build-board</h1>
+<p class="sub">What to build first, what a change forces you to rebuild, and one page that shows it.</p>
+<p>For SDKs made of many modules that depend on each other. You list the modules in one JSON file. It orders the builds, finds the rebuild set for a change, flags failed builds, low coverage and wrong SDK tags, and writes a static page.</p>
+<p><a class="cta" href="board/">Open the live example board</a><a class="cta" href="https://github.com/gerardrecinto/build-board#try-it-in-60-seconds">Run it in 60 seconds</a></p>
+<h2>Three real runs</h2>
+<p>Output of the commands on the sample manifest in the repo. The module names are made up.</p>
+<div class="tabs" role="group" aria-label="Command">
+<button data-k="plan" aria-pressed="true">plan</button>
+<button data-k="changed" aria-pressed="false">plan --changed hal</button>
+<button data-k="check" aria-pressed="false">check</button></div>
+<pre id="out" aria-live="polite"></pre>
+<p class="sub" id="note"></p>
+<h2>Limits</h2>
+<p>It reads a manifest you write: it does not run builds or talk to Jenkins, Gerrit or Perforce. It reads line coverage from Cobertura XML or lcov, and does not run or read Klocwork or Parasoft. <a href="https://github.com/gerardrecinto/build-board#what-it-does-not-do">Full list</a>.</p>
+</main>
+<script>
+const OUT={"plan": "level 0: driver\nlevel 1: hal\nlevel 2: runtime\nlevel 3: profiler\nlevel 4: sdk_tools", "changed": "hal\nruntime\nprofiler\nsdk_tools", "check": "profiler: coverage 60.0% is below 80%\nprofiler: SDK bundle pins v0.9.0 but the module is tagged v0.9.1\nprofiler: build failed\nsdk_tools: passed, but its dependency profiler is failed\n4 problem(s) in 5 modules"};
+const NOTE={plan:"One line per build stage. Modules on the same line can build in parallel.",changed:"Only what must rebuild after touching hal, in build order.",check:"Exits 1: the sample has a failed build, low coverage and a stale SDK pin on purpose."};
+const pre=document.getElementById("out"),note=document.getElementById("note");
+function show(k){pre.textContent=OUT[k];note.textContent=NOTE[k];document.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));}
+document.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.k)));show("plan");
+</script></body></html>

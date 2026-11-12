@@ -1,0 +1,74 @@
+{
+  "min_coverage": 80,
+  "sdk": {
+    "tag": "sdk-2.4.0",
+    "modules": {
+      "driver": "v1.8.0",
+      "hal": "v1.3.2",
+      "runtime": "v2.4.0",
+      "profiler": "v0.9.0",
+      "sdk_tools": "v2.4.0"
+    }
+  },
+  "modules": {
+    "driver": {
+      "deps": [],
+      "tag": "v1.8.0",
+      "coverage": "coverage/driver.info",
+      "build": {
+        "status": "passed",
+        "duration_s": 212,
+        "commit": "a41c9e07d2"
+      }
+    },
+    "hal": {
+      "deps": [
+        "driver"
+      ],
+      "tag": "v1.3.2",
+      "coverage": "coverage/hal.xml",
+      "build": {
+        "status": "passed",
+        "duration_s": 148,
+        "commit": "5be0c3a911"
+      }
+    },
+    "runtime": {
+      "deps": [
+        "hal"
+      ],
+      "tag": "v2.4.0",
+      "coverage": "coverage/runtime.xml",
+      "build": {
+        "status": "passed",
+        "duration_s": 395,
+        "commit": "9d77f1b3ac"
+      }
+    },
+    "profiler": {
+      "deps": [
+        "runtime"
+      ],
+      "tag": "v0.9.1",
+      "coverage": "coverage/profiler.info",
+      "build": {
+        "status": "failed",
+        "duration_s": 87,
+        "commit": "c2e8d40f66"
+      }
+    },
+    "sdk_tools": {
+      "deps": [
+        "runtime",
+        "profiler"
+      ],
+      "tag": "v2.4.0",
+      "coverage": "coverage/sdk_tools.xml",
+      "build": {
+        "status": "passed",
+        "duration_s": 60,
+        "commit": "e10a77bb09"
+      }
+    }
+  }
+}
