@@ -46,7 +46,7 @@ def render(board: Board, title: str = "Build board") -> str:
     )
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{escape(title)}</title><style>{CSS}</style></head><body><main>
+<title>{escape(title)}</title><link rel="icon" href="data:,"><style>{CSS}</style></head><body><main>
 <h1>{escape(title)}</h1>
 <p class="sub">SDK bundle {escape(board.sdk_tag or 'not set')}. Level is the build stage: modules in the same level can build in parallel.</p>
 <div class="cards">
